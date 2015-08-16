@@ -5,7 +5,7 @@ This Laravel 4 package provides a file loader and finder, similar to the Laravel
 
 ## Installation
 
-Begin by installing this package through Composer. Edit your project's `composer.json` file to require `way/generators`.
+Begin by installing this package through Composer. Edit your project's `composer.json` file to require `relax/loader`.
 
 	"require-dev": {
 		"relax/loader": "1.*"
