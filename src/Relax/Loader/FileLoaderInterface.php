@@ -5,10 +5,11 @@ interface FileLoaderInterface {
 	/**
 	 * Load the file with the given name.
 	 *
-	 * @param  string  $name
+	 * @param  string $name
+	 * @param bool    $cache
 	 * @return string
 	 */
-	public function load($name);
+	public function load($name, $cache);
 
 	/**
 	 * Add a location to the loader.
