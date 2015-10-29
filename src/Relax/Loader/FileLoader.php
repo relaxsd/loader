@@ -11,11 +11,11 @@ class FileLoader implements FileLoaderInterface {
 	 */
 	protected $filesystem;
 	/**
-	 * Cache containing the contents (!) of files that were loaded.
+	 * The contents (!) of files that have been found.
 	 *
 	 * @var array
 	 */
-	protected $cache = array();
+	protected $files = array();
 	/**
 	 * @var FileFinderInterface
 	 */
@@ -24,13 +24,51 @@ class FileLoader implements FileLoaderInterface {
 	/**
 	 * Create a new file file loader instance.
 	 *
-	 * @param  Filesystem $filesystem
+	 * @param  \Illuminate\Filesystem\Filesystem $filesystem
 	 * @param FileFinderInterface                $fileFinder
+	 * @param  array                             $paths
+	 * @param  array                             $extensions
 	 */
-	public function __construct(Filesystem $filesystem, FileFinderInterface $fileFinder)
+	public function __construct(Filesystem $filesystem, FileFinderInterface $fileFinder, array $paths = null, array $extensions = null)
 	{
 		$this->filesystem = $filesystem;
 		$this->fileFinder = $fileFinder;
+
+		// Pass paths to the finder
+		if ($paths) {
+			foreach ($paths as $path) {
+				$this->addLocation($path);
+			}
+		}
+
+		// Pass extensions to the finder
+		if ($extensions) {
+			foreach ($extensions as $extension) {
+				$this->addExtension($extension);
+			}
+		}
+	}
+
+	/**
+	 * Add a location to the finder.
+	 *
+	 * @param  string $location
+	 * @return void
+	 */
+	public function addLocation($location)
+	{
+		$this->fileFinder->addLocation($location);
+	}
+
+	/**
+	 * Register an extension with the file finder.
+	 *
+	 * @param  string $extension
+	 * @return void
+	 */
+	public function addExtension($extension)
+	{
+		$this->fileFinder->addExtension($extension);
 	}
 
 	/**
@@ -43,8 +81,8 @@ class FileLoader implements FileLoaderInterface {
 	public function loadRequire($name, $cache = true)
 	{
 		// Load from cache
-		if ($cache && isset($this->cache[$name])) {
-			return $this->cache[$name];
+		if ($cache && isset($this->files[$name])) {
+			return $this->files[$name];
 		}
 
 		// Get file name
@@ -54,8 +92,19 @@ class FileLoader implements FileLoaderInterface {
 
 		// Cache and return file contents
 		if ($cache) {
-			return $this->cache[$name] = $this->filesystem->getRequire($path);
+			return $this->files[$name] = $this->getRequire($path);
 		}
+		return $this->getRequire($path);
+	}
+
+	/**
+	 * Get a file's contents by requiring it.
+	 *
+	 * @param  string $path
+	 * @return mixed
+	 */
+	protected function getRequire($path)
+	{
 		return $this->filesystem->getRequire($path);
 	}
 
@@ -69,8 +118,8 @@ class FileLoader implements FileLoaderInterface {
 	public function load($name, $cache = true)
 	{
 		// Load from cache
-		if ($cache && isset($this->cache[$name])) {
-			return $this->cache[$name];
+		if ($cache && isset($this->files[$name])) {
+			return $this->files[$name];
 		}
 
 		// Get file name
@@ -80,8 +129,43 @@ class FileLoader implements FileLoaderInterface {
 
 		// Cache and return file contents
 		if ($cache) {
-			return $this->cache[$name] = $this->filesystem->get($path);
+			return $this->files[$name] = $this->get($path);
 		}
+		return $this->get($path);
+	}
+
+	/**
+	 * Get the contents of a file.
+	 *
+	 * @param  string $path
+	 * @return mixed
+	 */
+	protected function get($path)
+	{
 		return $this->filesystem->get($path);
+	}
+
+	/**
+	 * Add a namespace hint to the finder.
+	 *
+	 * @param  string       $namespace
+	 * @param  string|array $hints
+	 * @return void
+	 */
+	public function addNamespace($namespace, $hints)
+	{
+		$this->fileFinder->addNamespace($namespace, $hints);
+	}
+
+	/**
+	 * Prepend a namespace hint to the finder.
+	 *
+	 * @param  string       $namespace
+	 * @param  string|array $hints
+	 * @return void
+	 */
+	public function prependNamespace($namespace, $hints)
+	{
+		$this->fileFinder->prependNamespace($namespace, $hints);
 	}
 }
