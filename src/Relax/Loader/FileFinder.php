@@ -1,6 +1,6 @@
 <?php namespace Relax\Loader;
 
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Contracts\Filesystem\Filesystem;
 
 class FileFinder implements FileFinderInterface {
 
