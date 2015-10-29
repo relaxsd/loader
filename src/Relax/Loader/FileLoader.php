@@ -72,13 +72,13 @@ class FileLoader implements FileLoaderInterface {
 	}
 
 	/**
-	 * Load the contents of a file.
+	 * Load a file's contents by requiring it.
 	 *
 	 * @param  string $name
 	 * @param bool    $cache
 	 * @return string
 	 */
-	public function load($name, $cache = true)
+	public function loadRequire($name, $cache = true)
 	{
 		// Load from cache
 		if ($cache && isset($this->files[$name])) {
@@ -106,6 +106,43 @@ class FileLoader implements FileLoaderInterface {
 	protected function getRequire($path)
 	{
 		return $this->filesystem->getRequire($path);
+	}
+
+	/**
+	 * Load the contents of a file.
+	 *
+	 * @param  string $name
+	 * @param bool    $cache
+	 * @return string
+	 */
+	public function load($name, $cache = true)
+	{
+		// Load from cache
+		if ($cache && isset($this->files[$name])) {
+			return $this->files[$name];
+		}
+
+		// Get file name
+		if ( ! ($path = $this->fileFinder->find($name))) {
+			return null;
+		}
+
+		// Cache and return file contents
+		if ($cache) {
+			return $this->files[$name] = $this->get($path);
+		}
+		return $this->get($path);
+	}
+
+	/**
+	 * Get the contents of a file.
+	 *
+	 * @param  string $path
+	 * @return mixed
+	 */
+	protected function get($path)
+	{
+		return $this->filesystem->get($path);
 	}
 
 	/**
