@@ -1,5 +1,6 @@
 <?php namespace Relax\Loader;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 
 class FileLoader implements FileLoaderInterface {
@@ -20,17 +21,23 @@ class FileLoader implements FileLoaderInterface {
 	 * @var FileFinderInterface
 	 */
 	protected $fileFinder;
+	/**
+	 * @var Dispatcher
+	 */
+	private $events;
 
 	/**
 	 * Create a new file file loader instance.
 	 *
-	 * @param  Filesystem $filesystem
-	 * @param FileFinderInterface                $fileFinder
+	 * @param  Filesystem         $filesystem
+	 * @param FileFinderInterface $fileFinder
+	 * @param Dispatcher          $events
 	 */
-	public function __construct(Filesystem $filesystem, FileFinderInterface $fileFinder)
+	public function __construct(Filesystem $filesystem, FileFinderInterface $fileFinder, Dispatcher $events)
 	{
 		$this->filesystem = $filesystem;
 		$this->fileFinder = $fileFinder;
+		$this->events     = $events;
 	}
 
 	/**
@@ -42,21 +49,7 @@ class FileLoader implements FileLoaderInterface {
 	 */
 	public function loadRequire($name, $cache = true)
 	{
-		// Load from cache
-		if ($cache && isset($this->cache[$name])) {
-			return $this->cache[$name];
-		}
-
-		// Get file name
-		if ( ! ($path = $this->fileFinder->find($name))) {
-			return null;
-		}
-
-		// Cache and return file contents
-		if ($cache) {
-			return $this->cache[$name] = $this->filesystem->getRequire($path);
-		}
-		return $this->filesystem->getRequire($path);
+		return $this->load($name, $cache, true);
 	}
 
 	/**
@@ -64,9 +57,11 @@ class FileLoader implements FileLoaderInterface {
 	 *
 	 * @param  string $name
 	 * @param bool    $cache
+	 * @param bool    $require
 	 * @return string
+	 * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
 	 */
-	public function load($name, $cache = true)
+	public function load($name, $cache = true, $require = false)
 	{
 		// Load from cache
 		if ($cache && isset($this->cache[$name])) {
@@ -78,10 +73,19 @@ class FileLoader implements FileLoaderInterface {
 			return null;
 		}
 
+		// Get contents
+		$contents = $require
+			? $this->filesystem->get($path)
+			: $this->filesystem->getRequire($path);
+
 		// Cache and return file contents
 		if ($cache) {
-			return $this->cache[$name] = $this->filesystem->get($path);
+			return $this->cache[$name] = $contents;
 		}
-		return $this->filesystem->get($path);
+
+		$this->events->fire('relax.loader.loaded', [$contents, $this, $cache]);
+
+		return $contents;
 	}
+
 }
