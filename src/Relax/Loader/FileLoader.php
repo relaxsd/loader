@@ -19,7 +19,7 @@ class FileLoader implements FileLoaderInterface {
 	/**
 	 * @var FileFinderInterface
 	 */
-	private $fileFinder;
+	protected $fileFinder;
 
 	/**
 	 * Create a new file file loader instance.
