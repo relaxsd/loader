@@ -142,7 +142,7 @@ class FileFinder implements FileFinderInterface {
 			}
 		}
 
-		throw new \InvalidArgumentException("Template [$name] not found.");
+		throw new \InvalidArgumentException("File '{$name}' not found.");
 	}
 
 	/**
