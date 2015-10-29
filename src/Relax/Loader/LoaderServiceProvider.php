@@ -1,7 +1,6 @@
 <?php namespace Way\Generators;
 
 use Illuminate\Support\ServiceProvider;
-use Relax\Loader\FileFinder;
 
 class LoaderServiceProvider extends ServiceProvider {
 
