@@ -80,10 +80,10 @@ class FileLoader implements FileLoaderInterface {
 
 		// Cache and return file contents
 		if ($cache) {
-			return $this->cache[$name] = $contents;
+			$this->cache[$name] = $contents;
 		}
 
-		$this->events->fire('relax.loader.loaded', [$contents, $this, $cache]);
+		$this->events->fire('relax.loader.loaded', [$name, $contents, $this, $cache]);
 
 		return $contents;
 	}
