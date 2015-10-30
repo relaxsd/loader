@@ -75,8 +75,8 @@ class FileLoader implements FileLoaderInterface {
 
 		// Get contents
 		$contents = $require
-			? $this->filesystem->get($path)
-			: $this->filesystem->getRequire($path);
+			? $this->filesystem->getRequire($path)
+			: $this->filesystem->get($path);
 
 		// Cache and return file contents
 		if ($cache) {
