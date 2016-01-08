@@ -1,6 +1,8 @@
 # loader
 Filesystem, Finder and Loader classes for easy file loading.
 
+[![Build Status](https://travis-ci.org/relaxsd/loader.svg?branch=master)](https://travis-ci.org/relaxsd/loader)
+
 This PHP package provides a file finder and loader implementations, similar to the Laravel 4
 `Illuminate.View.Factory`, `Illuminate.Translation.Translator` and `Illuminate.Config.Repository`.
 
