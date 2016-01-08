@@ -1,21 +1,23 @@
 {
-    "name": "relax/loader",
-    "description": "Loader class for Laravel 4",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Martijn Kriek",
-            "email": "martijn.kriek@relax-software.nl"
-        }
-    ],
-    "require": {
-        "php": ">=5.4.0",
-        "illuminate/events": "~5.0",
-        "illuminate/filesystem": "~5.0"
-    },
-    "autoload": {
-        "psr-0": {
-			"Relax\\Loader": "src/"
-        }
+  "name": "relaxsd/loader",
+  "description": "Filesystem, Finder and Loader classes for easy file loading.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Martijn Kriek",
+      "company": "Relax Software Development",
+      "email": "martijn.kriek@relax-software.nl"
     }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.8.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Relax\\Loader\\": "src/"
+    }
+  }
 }

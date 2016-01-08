@@ -1,5 +1,0 @@
-{
-	"providers": [
-		"Relax\Loader\LoaderServiceProvider"
-	]
-}
