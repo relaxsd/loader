@@ -1,6 +1,6 @@
 <?php
 
-namespace Relax\Loader\FileFinder;
+namespace Relax\Loader\FileLoader;
 
 use Relax\Loader\Contracts\FileLoader as FileLoaderInterface;
 use Relax\Loader\Contracts\Filesystem;
