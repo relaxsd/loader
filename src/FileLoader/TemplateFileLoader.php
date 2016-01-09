@@ -2,6 +2,8 @@
 
 namespace Relax\Loader\FileLoader;
 
+use Relax\Loader\Contracts\TemplateFileLoader as TemplateFileLoaderInterface;
+
 /**
  * Class TemplateFileLoader.
  *
@@ -13,6 +15,6 @@ namespace Relax\Loader\FileLoader;
  * - IOC containers can bind this specific interface to a TemplateFileLoader instance which makes
  *   automatic dependency injection much easier.
  */
-class TemplateFileLoader extends FileLoader
+class TemplateFileLoader extends FileLoader implements TemplateFileLoaderInterface
 {
 }

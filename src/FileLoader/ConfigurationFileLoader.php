@@ -2,6 +2,8 @@
 
 namespace Relax\Loader\FileLoader;
 
+use Relax\Loader\Contracts\ConfigurationFileLoader as ConfigurationFileLoaderInterface;
+
 /**
  * Class ConfigurationFileLoader.
  *
@@ -13,6 +15,6 @@ namespace Relax\Loader\FileLoader;
  * - IOC containers can bind this specific interface to a ConfigurationFileLoader instance which makes
  *   automatic dependency injection much easier.
  */
-class ConfigurationFileLoader extends FileLoader
+class ConfigurationFileLoader extends FileLoader implements ConfigurationFileLoaderInterface
 {
 }
