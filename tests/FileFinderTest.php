@@ -31,7 +31,7 @@ class FileFinderTest extends PHPUnit_Framework_TestCase
         $this->fileFinder->addPaths('PATH');
 
         $expected = 'PATH/NAME.EXT';
-        $actual   = $this->fileFinder->find('NAME');
+        $actual = $this->fileFinder->find('NAME');
         $this->assertSame($expected, $actual);
     }
 }
